@@ -13,9 +13,37 @@ STATIC_DIR = './static'
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
 
+if 'mapbox_token' not in os.environ:
+    from dotenv import load_dotenv
+    load_dotenv()
+    MAPBOX_TOKEN = os.environ.get('mapbox_token')
+else:
+    MAPBOX_TOKEN = os.environ['mapbox_token']
+
 
 @app.route('/', methods=['GET'])
 def index():
 
   html = render_template('index.html')
+  return make_response(html)
+
+@app.route('/req', methods=['GET', 'POST'])
+def req():
+
+  if request.method=='POST':
+    print(request.form)
+
+  html = render_template('request.html', mapbox_token=MAPBOX_TOKEN)
+  return make_response(html)
+
+@app.route('/offer', methods=['GET'])
+def offer():
+
+  html = render_template('offer.html')
+  return make_response(html)
+
+@app.route('/available', methods=['GET'])
+def available():
+
+  html = render_template('available.html')
   return make_response(html)
