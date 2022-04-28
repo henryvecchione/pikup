@@ -51,6 +51,16 @@ def getAll(collection, sort_by=None):
         print(str(e))
         return None
 
+def getOne(collection, key, val):
+    try:
+        collection = getCollection(collection)
+        return collection.find_one({key : val})
+          
+    except Exception as e:
+        print(str(e))
+        return None
+  
+
 # ------------------------------------------------------------------- #
 
 if __name__ == "__main__":

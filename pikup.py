@@ -8,6 +8,7 @@ from io import StringIO
 from datetime import datetime
 import database as db
 import helpers as hlp
+from bson.objectid import ObjectId
 
 TEMPLATE_DIR = './templates'
 STATIC_DIR = './static'
@@ -79,4 +80,13 @@ def available():
 def getLocation():
 
   html = render_template('getLocation.html')
+  return make_response(html)
+
+@app.route('/bid', methods=['GET'])
+def bid():
+
+  jobId = ObjectId(request.args.get("id"))
+  job = db.getOne('jobs', "_id", jobId)
+
+  html = render_template('bid.html', job=job, mapbox_token=MAPBOX_TOKEN)
   return make_response(html)

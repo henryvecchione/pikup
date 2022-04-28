@@ -1,0 +1,93 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="row" style="min-height: 400px;">
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
+  <!-- Import Mapbox GL JS -->
+  <script src=https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js></script>
+  <link href=https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css rel="stylesheet" />
+  <!-- Import Turf and Polyline -->
+<script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.1.1/polyline.js></script>
+<!-- Import Mapbox GL Directions -->
+<script src=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js></script>
+<link rel="stylesheet" href=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css type="text/css" />
+  <div id="map"></div>
+
+  <script>
+    mapboxgl.accessToken = '{{mapbox_token}}';
+    const latOrig = parseFloat('{{job["latOrig"]}}');
+    const lonOrig = parseFloat('{{job["lonOrig"]}}');
+    const latDest = parseFloat('{{job["latDest"]}}');
+    const lonDest = parseFloat('{{job["lonDest"]}}');
+    const map = new mapboxgl.Map({
+      container: 'map', // Specify the container ID
+      style: 'mapbox://styles/mapbox/streets-v11', // Specify which map style to use
+      center: [lonOrig, latOrig],
+      zoom: 11 // Specify the starting zoom
+    });
+
+    const directions = new MapboxDirections({
+      accessToken: mapboxgl.accessToken,
+      unit: 'metric',
+      profile: 'mapbox/driving',
+      alternatives: false,
+      geometries: 'geojson',
+      controls: { instructions: false },
+      flyTo: false
+    });
+      
+
+      map.addControl(directions, 'top-right');
+
+      map.on('load',  function() {
+        directions.setOrigin([lonOrig,latOrig]);
+        directions.setDestination([lonDest,latDest]);
+      });
+
+      map.scrollZoom.enable();
+
+      map.addSource('theRoute', {
+        type: 'geojson',
+        data: {
+          type: 'Feature'
+        }
+      });
+ 
+      map.addLayer({
+        id: 'theRoute',
+        type: 'line',
+        source: 'theRoute',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#cccccc',
+          'line-opacity': 0.5,
+          'line-width': 13,
+          'line-blur': 0.5
+        }
+      });
+  </script>
+</div>
+
+
+
+
+
+<div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">An item</li>
+    <li class="list-group-item">A second item</li>
+    <li class="list-group-item">A third item</li>
+  </ul>
+  <div class="card-body">
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+  </div>
+</div>
+{% endblock %}
