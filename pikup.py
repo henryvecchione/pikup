@@ -31,7 +31,19 @@ def index():
 def req():
 
   if request.method=='POST':
-    print(request.form)
+    newJob = {
+      "latOrig" : float(request.form["latOrig"]),
+      "lonOrig" : float(request.form["lonOrig"]),
+      "latDest" : float(request.form["latDest"]),
+      "lonDest" : float(request.form["lonDest"]),
+      "deliverBy" : request.form["deliverBy"],
+      "size" : request.form["size"],
+      "weight" : request.form["weight"],
+      "covered" : int(request.form["covered"]),
+      "offer" : int(request.form["offer"]),
+      "notes" : request.form["notes"]
+    }
+    db.insertOne("jobs", newJob)
 
   html = render_template('request.html', mapbox_token=MAPBOX_TOKEN)
   return make_response(html)

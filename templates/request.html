@@ -41,6 +41,9 @@
       var latOrig = e.coords.latitude
       document.getElementById('latOrig').value = latOrig;
       document.getElementById('lonOrig').value = lonOrig;
+      if (document.getElementById('latDest').value != "") {
+        document.getElementById("submitBtn").style.display = "block"
+      }
   });
 
   var geocoder = new MapboxGeocoder({
@@ -56,6 +59,9 @@ geocoder.on('result', function(e) {
       var lonOrig = e.result.geometry.coordinates[1];
       document.getElementById('latOrig').value = latOrig;
       document.getElementById('lonOrig').value = lonOrig;
+      if (document.getElementById('latDest').value != "") {
+        document.getElementById("submitBtn").style.display = "block"
+      }
   });
   </script>
   <script>
@@ -90,6 +96,9 @@ geocoder.on('result', function(e) {
       var lonDest = e.coords.longitude;
       document.getElementById('latDest').value = latDest;
       document.getElementById('lonDest').value = lonDest;
+      if (document.getElementById('latOrig').value != "") {
+        document.getElementById("submitBtn").style.display = "block"
+      }
   });
 
   var geocoder2 = new MapboxGeocoder({
@@ -106,6 +115,9 @@ geocoder.on('result', function(e) {
       var lonDest = e.result.geometry.coordinates[1];
       document.getElementById('latDest').value = latDest;
       document.getElementById('lonDest').value = lonDest;
+      if (document.getElementById('latOrig').value != "") {
+        document.getElementById("submitBtn").style.display = "block"
+      }
   });
   </script>
 
@@ -116,18 +128,73 @@ geocoder.on('result', function(e) {
   <input id="lonOrig" name="lonOrig" type="hidden" />
   <input id="latDest" name="latDest" type="hidden" />
   <input id="lonDest" name="lonDest" type="hidden" />
-  <div class="form-group">
-    <label for="deliveredBy">When do you need it delivered?</label>
-    <input type="datetime-local" class="form-control" id="deliveredBy" aria-describedby="emailHelp" placeholder="Enter email">
+  <div class="row">
+    <div class="form-group">
+      <label for="deliverBy">When do you need it delivered?</label>
+      <input type="datetime-local" class="form-control" id="deliverBy" name="deliverBy">
+    </div>
   </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  <div class="row">
+    <label for="sizePicker">How big is the load?</label><br>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="sizePicker">
+      <label class="btn btn-secondary active">
+        <input type="radio" name="size" id="size1" autocomplete="off"  value="sm"checked> Small
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="size" id="size2" autocomplete="off" value="md"> Medium
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="size" id="size3" autocomplete="off" value="lg"> Large
+      </label>
+      <!-- <label class="btn btn-secondary">
+        <input type="radio" name="size" id="size3" autocomplete="off" value="xl"> XL
+      </label> -->
+    </div>
   </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  <div class="row">
+    <label for="weightPicker">How heavy is the load?</label><br>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="weightPicker">
+      <label class="btn btn-secondary active">
+        <input type="radio" name="weight" id="weight1" autocomplete="off"  value="sm"checked> Light
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="weight" id="weight2" autocomplete="off" value="md"> Medium
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="weight" id="weight3" autocomplete="off" value="lg"> Heavy
+      </label>
+    </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <div class="row">
+    <label for="coveredPicker">Does it need to be covered? (i.e. moved with a van, not a pickup truck)</label><br>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="coveredPicker">
+      <label class="btn btn-secondary active">
+        <input type="radio" name="covered" id="coveredF" autocomplete="off"  value="0"checked> No
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="covered" id="coveredT" autocomplete="off" value="1"> Yes
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group">
+      <label for="price">What is your starting offer? (USD)</label>
+      <input type="number" class="form-control" id="price" name="offer" >
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group">
+      <label for="notes">Any notes?</label>
+      <input type="text" class="form-control" id="notes" name="notes" >
+    </div>
+  </div>
+
+  <div class="row" id="submitBtn" style="display: none;">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+  
+  
+
+  
 </form>
 {% endblock %}
