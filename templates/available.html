@@ -1,4 +1,47 @@
 {% extends "index.html" %}
 {% block content %}
-sugma
+{% for job in jobs %}
+  <div class="card mb-3" >
+    <div class="row g-0">
+      <div class=" row card-header">
+        <div class="col-sm-4">
+          <h1 class="display-1">{{"$%d"|format(job["offer"])}}</h1>
+        </div>
+        <div class="col-sm-8">
+          {% if dists[loop.index - 1][0] < 1 %}      
+            <div class="card-title display-4">{{"%.2f"|format(dists[loop.index - 1][0])}}mi away  </div>
+          {% else %}
+            <div class="card-title display-4">{{"%d"|format(dists[loop.index - 1][0])}}mi away  </div>
+          {% endif %}
+          {% if dists[loop.index - 1][1] < 1 %}
+          <div class="text-muted display-5">{{"%.2f"|format(dists[loop.index - 1][1])}}mi trip</div>  
+          {% else %}
+          <div class="text-muted display-5">{{"%d"|format(dists[loop.index - 1][1])}}mi trip</div>  
+            
+          {% endif %}
+          
+          
+        </div>
+        
+      </div>
+      <div class="col">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <p class="card-text"><strong>Notes: </strong>{{job["notes"]}}</p>
+            </div>
+            <div class="col-md-4">
+              <ul class="list-group list-group-flush ">
+              
+                <li class="list-group-item"><strong>Size: </strong>{{job["size"]}}</li>
+                <li class="list-group-item"><strong>Weight: </strong>{{job["weight"]}}</li> 
+                <li class="list-group-item"><strong>Covered: </strong>{{job["covered"]}}</li> 
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
 {% endblock %}

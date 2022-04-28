@@ -39,6 +39,18 @@ def insertOne(collection, insertDict):
     print(str(e))
     return None
 
+def getAll(collection, sort_by=None):
+    try:
+        collection_name = getCollection(collection)
+        if sort_by:
+          return collection_name.find(sort=[(sort_by, pymongo.ASCENDING)])
+        else:
+          return collection_name.find()
+          
+    except Exception as e:
+        print(str(e))
+        return None
+
 # ------------------------------------------------------------------- #
 
 if __name__ == "__main__":

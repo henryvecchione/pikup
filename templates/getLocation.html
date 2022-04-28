@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% block content %}
+<p>Click the button to get your coordinates.</p>
+
+<button onclick="getLocation()">Try It</button>
+
+<p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(setLocCookies);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function setLocCookies(position) {
+  document.cookie = "userLat=" + position.coords.latitude; 
+  document.cookie = "userLon=" + position.coords.longitude;
+  window.location.href = "/available";
+}
+</script>
+{% endblock %}

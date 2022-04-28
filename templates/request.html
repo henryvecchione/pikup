@@ -37,8 +37,8 @@
   // Add geolocate control to the map.
   map.addControl(geolocate);
   geolocate.on('geolocate', function(e) {
+      var latOrig = e.coords.latitude;
       var lonOrig = e.coords.longitude;
-      var latOrig = e.coords.latitude
       document.getElementById('latOrig').value = latOrig;
       document.getElementById('lonOrig').value = lonOrig;
       if (document.getElementById('latDest').value != "") {
@@ -55,8 +55,8 @@
 );
 
 geocoder.on('result', function(e) {
-      var latOrig = e.result.geometry.coordinates[0];
-      var lonOrig = e.result.geometry.coordinates[1];
+      var latOrig = e.result.geometry.coordinates[1];
+      var lonOrig = e.result.geometry.coordinates[0];
       document.getElementById('latOrig').value = latOrig;
       document.getElementById('lonOrig').value = lonOrig;
       if (document.getElementById('latDest').value != "") {
@@ -111,8 +111,8 @@ geocoder.on('result', function(e) {
     );
 
     geocoder2.on('result', function(e) {
-      var latDest = e.result.geometry.coordinates[0];
-      var lonDest = e.result.geometry.coordinates[1];
+      var latDest = e.result.geometry.coordinates[1];
+      var lonDest = e.result.geometry.coordinates[0];
       document.getElementById('latDest').value = latDest;
       document.getElementById('lonDest').value = lonDest;
       if (document.getElementById('latOrig').value != "") {

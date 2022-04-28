@@ -7,6 +7,7 @@ import os
 from io import StringIO
 from datetime import datetime
 import database as db
+import helpers as hlp
 
 TEMPLATE_DIR = './templates'
 STATIC_DIR = './static'
@@ -57,5 +58,25 @@ def offer():
 @app.route('/available', methods=['GET'])
 def available():
 
-  html = render_template('available.html')
+  userLat = float(request.cookies.get("userLat"))
+  userLon = float(request.cookies.get("userLon"))
+
+  jobs = [j for j in db.getAll("jobs", "deliverBy")]
+  dists = []
+  if userLat and userLon:
+    for j in jobs:
+      distAway = hlp.distance( j["latOrig"], userLat, j["lonOrig"], userLon)
+      distBetween = hlp.distance(j["latOrig"], j["latDest"], j["lonOrig"], j["lonDest"])
+      dists.append((distAway,distBetween))
+  else:
+    return redirect("/getLocation")
+
+  html = render_template('available.html', jobs=jobs, dists=dists)
+  return make_response(html)
+
+
+@app.route('/getLocation', methods=['GET'])
+def getLocation():
+
+  html = render_template('getLocation.html')
   return make_response(html)
