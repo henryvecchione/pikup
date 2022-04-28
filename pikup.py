@@ -33,6 +33,7 @@ def index():
 def req():
 
   if request.method=='POST':
+    # make a new dict to insert in database
     newJob = {
       "latOrig" : float(request.form["latOrig"]),
       "lonOrig" : float(request.form["lonOrig"]),
@@ -42,6 +43,7 @@ def req():
       "size" : request.form["size"],
       "weight" : request.form["weight"],
       "covered" : int(request.form["covered"]),
+      "starting" : int(request.form["offer"]),
       "offer" : int(request.form["offer"]),
       "notes" : request.form["notes"]
     }
@@ -59,16 +61,20 @@ def offer():
 @app.route('/available', methods=['GET'])
 def available():
 
+  # get the user's location from cookies
   userLat = float(request.cookies.get("userLat"))
   userLon = float(request.cookies.get("userLon"))
 
+  # get jobs from database query
   jobs = [j for j in db.getAll("jobs", "deliverBy")]
+  # for each job, calculate distance from user and between points
   dists = []
   if userLat and userLon:
     for j in jobs:
       distAway = hlp.distance( j["latOrig"], userLat, j["lonOrig"], userLon)
       distBetween = hlp.distance(j["latOrig"], j["latDest"], j["lonOrig"], j["lonDest"])
       dists.append((distAway,distBetween))
+  # if there are no location cookies, prompt the user for them 
   else:
     return redirect("/getLocation")
 
@@ -82,15 +88,22 @@ def getLocation():
   html = render_template('getLocation.html')
   return make_response(html)
 
-@app.route('/bid', methods=['GET'])
+@app.route('/bid', methods=['GET','POST'])
 def bid():
 
+  # get the job from the databse 
   jobId = ObjectId(request.args.get("id"))
   job = db.getOne('jobs', "_id", jobId)
 
+  if request.method == "POST":
+    # if bid is less than starting, give it to them
+    # if bid is more than starting, less than offer, update offer
+
+  # get current location from cookies
   userLat = float(request.cookies.get("userLat"))
   userLon = float(request.cookies.get("userLon"))
 
+  # calc distances
   if userLat and userLon:
     distAway = hlp.distance( job["latOrig"], userLat, job["lonOrig"], userLon)
     distBetween = hlp.distance(job["latOrig"], job["latDest"], job["lonOrig"], job["lonDest"])
