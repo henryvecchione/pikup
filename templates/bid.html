@@ -32,8 +32,9 @@
       profile: 'mapbox/driving',
       alternatives: false,
       geometries: 'geojson',
-      controls: { instructions: false },
-      flyTo: false
+      controls: { instructions: false, inputs: false },
+      flyTo: false,
+      interactive: false
     });
       
 
@@ -75,19 +76,49 @@
 
 
 
-<div class="card" style="width: 100%;">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">An item</li>
-    <li class="list-group-item">A second item</li>
-    <li class="list-group-item">A third item</li>
-  </ul>
-  <div class="card-body">
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+<div class="card mb-3" >
+  <div class="row g-0">
+    <div class=" row card-header">
+      <div class="col-sm-4">
+        <h1 class="display-1">{{"$%d"|format(job["offer"])}}</h1>
+      </div>
+      <div class="col-sm-6">
+        {% if distAway < 1 %}      
+          <div class="card-title display-4">{{"%.2"|format(distAway)}}mi away  </div>
+        {% else %}
+          <div class="card-title display-4">{{"%d"|format(distAway)}}mi away  </div>
+        {% endif %}
+        {% if distTo < 1 %}
+          <div class="text-muted display-5">{{"%.2"|format(distTo)}}mi trip</div>  
+        {% else %}
+          <div class="text-muted display-5">{{"%d"|format(distTo)}}mi trip</div>   
+        {% endif %}
+        
+      </div>
+      <div class="col-2 ">
+        <div class="row">
+          <a class="btn btn-primary btn-block" href="/bid?id={{job['_id']}}">Bid</a>
+        </div>
+      </div>
+      
+    </div>
+    <div class="col">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-8">
+            <p class="card-text"><strong>Notes: </strong><br>{{job["notes"]}}</p>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-group list-group-flush ">
+            
+              <li class="list-group-item"><strong>Size: </strong>{{job["size"]}}</li>
+              <li class="list-group-item"><strong>Weight: </strong>{{job["weight"]}}</li> 
+              <li class="list-group-item"><strong>Covered: </strong>{{job["covered"]}}</li> 
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

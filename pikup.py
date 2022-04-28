@@ -88,5 +88,15 @@ def bid():
   jobId = ObjectId(request.args.get("id"))
   job = db.getOne('jobs', "_id", jobId)
 
-  html = render_template('bid.html', job=job, mapbox_token=MAPBOX_TOKEN)
+  userLat = float(request.cookies.get("userLat"))
+  userLon = float(request.cookies.get("userLon"))
+
+  if userLat and userLon:
+    distAway = hlp.distance( job["latOrig"], userLat, job["lonOrig"], userLon)
+    distBetween = hlp.distance(job["latOrig"], job["latDest"], job["lonOrig"], job["lonDest"])
+  else:
+    return redirect("/getLocation")
+
+
+  html = render_template('bid.html', job=job, mapbox_token=MAPBOX_TOKEN, distAway=distAway, distTo=distBetween)
   return make_response(html)
