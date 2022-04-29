@@ -2,7 +2,13 @@
 {% block content %}
 <div class="display-1">Available jobs:</div>
 {% for job in jobs %}
+
+  {% if dists[loop.index - 1][0] < 5 %}
+  <div class="card text-white bg-success mb-3" >
+  {% else %}
   <div class="card mb-3" >
+  {% endif %}
+
     <div class="row g-0">
       <div class=" row card-header">
         <div class="col-sm-4">
@@ -14,11 +20,20 @@
           {% else %}
             <div class="card-title display-4">{{"%d"|format(dists[loop.index - 1][0])}}mi away  </div>
           {% endif %}
-          {% if dists[loop.index - 1][1] < 1 %}
-            <div class="text-muted display-5">{{"%.2f"|format(dists[loop.index - 1][1])}}mi trip</div>  
+          {% if dists[loop.index - 1][0] < 5 %}
+            {% if dists[loop.index - 1][1] < 1 %}
+              <div class=" display-5">{{"%.2f"|format(dists[loop.index - 1][1])}}mi trip</div>  
+            {% else %}
+              <div class=" display-5">{{"%d"|format(dists[loop.index - 1][1])}}mi trip</div>   
+            {% endif %}
           {% else %}
-            <div class="text-muted display-5">{{"%d"|format(dists[loop.index - 1][1])}}mi trip</div>   
+            {% if dists[loop.index - 1][1] < 1 %}
+              <div class="text-muted display-5">{{"%.2f"|format(dists[loop.index - 1][1])}}mi trip</div>  
+            {% else %}
+              <div class="text-muted display-5">{{"%d"|format(dists[loop.index - 1][1])}}mi trip</div>   
+            {% endif %}
           {% endif %}
+          
           
         </div>
         <div class="col-2 ">

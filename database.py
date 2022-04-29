@@ -39,6 +39,15 @@ def insertOne(collection, insertDict):
     print(str(e))
     return None
 
+def updateOne(collection, docId, field, newVal):
+  try:
+    collection_name = getCollection(collection)
+    result = collection_name.update_one({"_id":docId}, {"$set" : {field : newVal}})
+    return result.inserted_id
+  except Exception as e:
+    print(str(e))
+    return None
+
 def getAll(collection, sort_by=None):
     try:
         collection_name = getCollection(collection)

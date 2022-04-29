@@ -48,6 +48,9 @@ def req():
       "notes" : request.form["notes"]
     }
     db.insertOne("jobs", newJob)
+    distTo = hlp.distance(newJob["latOrig"], newJob['latDest'], newJob['lonOrig'], newJob['lonDest'])
+    html = render_template('confirm.html', mapbox_token=MAPBOX_TOKEN, job=newJob, distTo=distTo)
+    return make_response(html)
 
   html = render_template('request.html', mapbox_token=MAPBOX_TOKEN)
   return make_response(html)
@@ -97,15 +100,22 @@ def bid():
 
   if request.method == "POST":
     # if bid is less than starting, give it to them
-    # if bid is more than starting, less than offer, update offer
+    newBid = int(request.form["bid"])
+    if newBid < job["offer"]:
+      db.updateOne("jobs", job["_id"], "offer", newBid)
+      return redirect('/bid?id=' + str(job["_id"]))
+    elif job["offer"] == job["starting"]:
+      db.updateOne("jobs", job["_id"], "offer", newBid)
+      return redirect('/bid?id=' + str(job["_id"]))
+
 
   # get current location from cookies
-  userLat = float(request.cookies.get("userLat"))
-  userLon = float(request.cookies.get("userLon"))
+  userLat = request.cookies.get("userLat")
+  userLon = request.cookies.get("userLon")
 
   # calc distances
   if userLat and userLon:
-    distAway = hlp.distance( job["latOrig"], userLat, job["lonOrig"], userLon)
+    distAway = hlp.distance( job["latOrig"], float(userLat), job["lonOrig"], float(userLon))
     distBetween = hlp.distance(job["latOrig"], job["latDest"], job["lonOrig"], job["lonDest"])
   else:
     return redirect("/getLocation")

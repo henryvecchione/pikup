@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% block content %}
+<div class="display-1">Confirmed!</div>
 <div class="row" style="min-height: 400px;">
   <meta name='viewport' content='width=device-width, initial-scale=1' />
   <!-- Import Mapbox GL JS -->
@@ -75,39 +76,21 @@
 
 
 
-
 <div class="card mb-3" >
   <div class="row g-0">
     <div class=" row card-header">
       <div class="col-sm-4">
         <h1 class="display-1">{{"$%d"|format(job["offer"])}}</h1>
-        <h5 class="text-muted">Starting: {{"$%d"|format(job["starting"])}}</h5>
       </div>
       <div class="col-sm-6">
-        {% if distAway < 1 %}      
-          <div class="card-title display-4">{{"%.2f"|format(distAway)}}mi away  </div>
-        {% else %}
-          <div class="card-title display-4">{{"%d"|format(distAway)}}mi away  </div>
-        {% endif %}
         {% if distTo < 1 %}
-          <div class="text-muted display-5">{{"%.2f"|format(distTo)}}mi trip</div>  
+          <div class="display-5">{{"%.2f"|format(distTo)}}mi trip</div>  
         {% else %}
-          <div class="text-muted display-5">{{"%d"|format(distTo)}}mi trip</div>   
+          <div class="display-5">{{"%d"|format(distTo)}}mi trip</div>   
         {% endif %}
         
       </div>
       <div class="col-2 ">
-        <form method="POST">
-          <h3>Bid:</h3>
-          <div class="form-group">
-            <div class="row">
-              <input type="number" class="form-control" id="bid" name="bid" value="{{'%d'|format(job['offer']*0.95)}}">
-            </div>
-            <div class="row">
-              <button type="submit" class="btn btn-primary">Bid</button>
-            </div>
-          </div>
-        </form>
       </div>
       
     </div>
