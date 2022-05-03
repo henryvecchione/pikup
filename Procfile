@@ -1,1 +1,1 @@
-web: gunicorn pikup.wsgi --log-file -
+web: gunicorn pikup:app
