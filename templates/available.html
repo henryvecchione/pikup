@@ -54,7 +54,11 @@
               
                 <li class="list-group-item"><strong>Size: </strong>{{job["size"]}}</li>
                 <li class="list-group-item"><strong>Weight: </strong>{{job["weight"]}}</li> 
-                <li class="list-group-item"><strong>Covered: </strong>{{job["covered"]}}</li> 
+                {% if job["covered"] %}
+                <li class="list-group-item"><strong>Covered: </strong>Yes</li> 
+                {% else %}  
+                <li class="list-group-item"><strong>Covered: </strong>No</li> 
+                {% endif %}
               </ul>
             </div>
           </div>
