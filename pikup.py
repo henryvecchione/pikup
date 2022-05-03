@@ -65,14 +65,16 @@ def offer():
 def available():
 
   # get the user's location from cookies
-  userLat = float(request.cookies.get("userLat"))
-  userLon = float(request.cookies.get("userLon"))
+  userLat = request.cookies.get("userLat")
+  userLon = request.cookies.get("userLon")
 
   # get jobs from database query
   jobs = [j for j in db.getAll("jobs", "deliverBy")]
   # for each job, calculate distance from user and between points
   dists = []
   if userLat and userLon:
+    userLat = float(userLat)
+    userLon = float(userLon)
     for j in jobs:
       distAway = hlp.distance( j["latOrig"], userLat, j["lonOrig"], userLon)
       distBetween = hlp.distance(j["latOrig"], j["latDest"], j["lonOrig"], j["lonDest"])
